@@ -1,0 +1,13 @@
+{
+  "name": "pagebuilder",
+  "version": "0.1.0",
+  "description": "Page builder",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "dependencies": {
+    "uuid": "^8.2.0"
+  },
+  "devDependencies": {
+    "lerna": "^3.22.1"
+  }
+}
