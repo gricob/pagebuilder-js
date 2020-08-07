@@ -4,12 +4,6 @@ import { actionTypes as editorActions } from '../../store/editor';
 import DropPayload from '../../store/editor/actions/drop/payload';
 
 export default {
-  props: {
-    vue: {
-      type: Function,
-      required: false,
-    }
-  },
   computed: {
     stylesheets() {
       return this.$store.state.page.stylesheets;

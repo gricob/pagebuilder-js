@@ -8,7 +8,7 @@ export default {
     Vue.prototype.$editor = config;
 
     this.registerStoreModules(Vue);
-    this.registerComponents(Vue, config.widgets);
+    this.setupWidgets(Vue, config.widgets);
   },
   registerStoreModules(Vue) {
     const store: Store<any> = Vue.store;
@@ -19,11 +19,9 @@ export default {
 
     Object.keys(modules).forEach(name => store.registerModule(name, modules[name]));
   },
-  registerComponents(Vue, widgets: Widget[]) {
+  setupWidgets(Vue, widgets: Widget[]) {
     widgets.forEach(widget => {
-      const vueWidget = <Widget> widget;
-      
-      Vue.component(vueWidget.name, vueWidget.component);
+      widget.setup(Vue);
     })
   }
 }

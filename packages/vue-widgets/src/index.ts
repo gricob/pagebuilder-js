@@ -1,3 +1,3 @@
-import { Heading } from './basic';
+import Heading from './heading';
 
 export { Heading };
