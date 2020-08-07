@@ -1,9 +1,8 @@
 import Vuex from 'vuex';
 import { Node } from '@pagebuilder/core';
 import State from './state';
-import mutations from './mutations';
-import actions from './actions';
-import Types from './types';
+import actions, { types as actionTypes } from './actions';
+import mutations, { types as mutationTypes } from './mutations';
 
 const state: State = {
   root: new Node('div'),
@@ -17,4 +16,4 @@ export default {
   actions,
 }
 
-export { Types };
+export { actionTypes, mutationTypes };

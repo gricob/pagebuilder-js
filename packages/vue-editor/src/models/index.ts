@@ -1,3 +1,4 @@
 import Widget from './widget';
+import Configuration from './configuration';
 
-export { Widget };
+export { Widget, Configuration };

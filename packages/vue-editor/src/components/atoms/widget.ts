@@ -1,5 +1,7 @@
+import { mapActions } from 'vuex';
 import { Widget } from '@pagebuilder/core';
 import { WIDGET } from '../../types';
+import { actionTypes as editorActions } from '../../store/editor';
 
 export default {
   name: 'Widget',
@@ -10,7 +12,8 @@ export default {
     }
   },
   methods: {
-    dragHandler(event: DragEvent) {
+    ...mapActions('editor', [editorActions.DRAG_END]),
+    handleDrag(event: DragEvent) {
       event.dataTransfer.setData(WIDGET, this.widget.name.toString());
     },
   },
@@ -21,7 +24,8 @@ export default {
         draggable: true,
       },
       on: {
-        dragstart: this.dragHandler
+        dragstart: this.handleDrag,
+        dragend: this[editorActions.DRAG_END]
       }
     }, [
       createElement('div', {

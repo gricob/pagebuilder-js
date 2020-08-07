@@ -1,9 +1,12 @@
 import State from "./state"
-import mutations from './mutations';
-import actions from './actions';
+import actions, { types as actionTypes } from './actions';
+import mutations, { types as mutationTypes } from './mutations';
 
 const state: State = {
   widgets: [],
+  dropIndicator: null,
+  dropTargetNode: null,
+  dropPosition: null,
 }
 
 export default {
@@ -12,3 +15,5 @@ export default {
   mutations,
   actions
 }
+
+export { actionTypes, mutationTypes };

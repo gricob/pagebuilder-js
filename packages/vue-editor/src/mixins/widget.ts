@@ -1,7 +1,10 @@
 import { mapActions } from 'vuex';
-import { Node, NodeFactory } from '@pagebuilder/core';
-import { PageTypes } from '../store';
+import { Node } from '@pagebuilder/core';
+import { actionTypes as editorActions } from '../store/editor';
 import { WIDGET } from '../types';
+import { Enum } from '..';
+import DragOverPayload from '../store/editor/actions/drag-over/payload';
+import DropPayload from '../store/editor/actions/drop/payload';
 
 const Widget = {
   props: {
@@ -19,71 +22,60 @@ const Widget = {
       return;
     }
 
-    this.setUpDropListeners();
+    this.setUpListeners();
   },
   methods: {
-    setUpDropListeners() {
-      let droppingBefore = undefined;
+    setUpListeners() {
+      const el: HTMLElement = this.$el;
 
-      const beforeIndicator = document.createElement('div');
-      beforeIndicator.className = 'drop-indicator';
-      beforeIndicator.style.display = 'none';
+      el.addEventListener('dragenter', this.handleDragEnter);
+      el.addEventListener('dragover', this.handleDragOver);
+      el.addEventListener('drop', this.handleDrop);
+    },
+    ...mapActions('editor', [
+      editorActions.DRAG_OVER,
+      editorActions.DROP
+    ]),
+    handleDragEnter(event: DragEvent): void {
+      event.preventDefault();
+      event.stopPropagation();
+    },
+    handleDragOver(event: DragEvent): void {
+      const el = event.target as HTMLElement;
+      const rect = el.getBoundingClientRect();
+      const offset = event.pageY - rect.top;
+      const dragOverBefore = offset < (el.offsetHeight / 2);
 
-      const afterIndicator = document.createElement('div');
-      afterIndicator.className = 'drop-indicator';
-      afterIndicator.style.display = 'none';
+      const payload: DragOverPayload = {
+        refElement: this.$el,
+        refNode: this.node,
+        position: dragOverBefore
+          ? Enum.TargetPosition.Before
+          : Enum.TargetPosition.After
+      };
 
-      this.$el.parentNode.insertBefore(beforeIndicator, this.$el);
-      this.$el.parentNode.insertBefore(afterIndicator, this.$el.nextSibling);
+      this[editorActions.DRAG_OVER](payload);
 
-      this.$el.addEventListener('dragover', (event) => {
-        const rect = event.currentTarget.getBoundingClientRect();
-        const offset = event.pageY - rect.top;
-        droppingBefore = offset < (event.currentTarget.offsetHeight / 2);
+      event.preventDefault();
+      event.stopPropagation();
+    },
+    handleDrop(event: DragEvent): void {
+      const widget = event.dataTransfer.getData(WIDGET);
 
-        beforeIndicator.style.display = droppingBefore ? 'block' : 'none';
-        afterIndicator.style.display = !droppingBefore ? 'block' : 'none';
-
-        event.preventDefault();
-        event.stopPropagation();
-      });
-
-      this.$el.addEventListener('dragenter', (event) => {
-        event.preventDefault();
-        event.stopPropagation();
-      });
-
-      const clearIndicators = () => {
-        beforeIndicator.style.display = 'none';
-        afterIndicator.style.display = 'none';
+      if (!widget) {
+        return;
       }
 
-      this.$el.addEventListener('dragleave', () => {
-        clearIndicators();
-      });
+      const payload: DropPayload = { 
+        refNode: this.node, 
+        widget
+      };
 
-      this.$el.addEventListener('drop', (event) => {
-        clearIndicators();
+      this[editorActions.DROP](payload);
 
-        const widget = event.dataTransfer.getData(WIDGET);
-
-        if (!widget) {
-          return;
-        }
-
-        const node = NodeFactory.getInstance().create(widget);
-        
-        if (droppingBefore) {
-          this.insertBefore({ parent: this.parent, reference: this.node, child: node })
-        } else {
-          this.insertAfter({ parent: this.parent, reference: this.node, child: node });
-        }
-
-        event.preventDefault();
-        event.stopPropagation();
-      });
-    },
-    ...mapActions('page', [PageTypes.ACTION.INSERT_AFTER, PageTypes.ACTION.INSERT_BEFORE])
+      event.preventDefault();
+      event.stopPropagation();
+    }
   }
 };
 

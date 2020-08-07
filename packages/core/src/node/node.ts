@@ -8,9 +8,11 @@ export default class Node {
 
   attributes: Record<string, any> = {};
 
-  textContent?: string;
+  textContent: string | null;
 
   style: NodeStyle = {};
+
+  parent: Node | null;
 
   children: Node[] = [];
 
@@ -29,6 +31,7 @@ export default class Node {
     }
 
     this.children.splice(index, 0, newNode);
+    newNode.parent = this;
   }
 
   insertChildAfter(newNode: Node, existingNode: Node) {
@@ -39,10 +42,12 @@ export default class Node {
     }
 
     this.children.splice(index + 1, 0, newNode);
+    newNode.parent = this;
   }
 
   appendChild(child: Node) {
     this.children.push(child);
+    child.parent = this;
   }
 
   hasChildren(): boolean {

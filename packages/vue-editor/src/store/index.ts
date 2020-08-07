@@ -1,4 +1,4 @@
-import Page, { Types as PageTypes } from './page';
+import Page from './page';
 import Editor from './editor';
 
 const modules = {
@@ -7,5 +7,3 @@ const modules = {
 };
 
 export default modules;
-
-export { Page, PageTypes, Editor };
