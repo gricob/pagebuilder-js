@@ -50,6 +50,10 @@ export default class Node {
     child.parent = this;
   }
 
+  removeChild(child: Node) {
+    this.children = this.children.filter(c => c.uuid != child.uuid);
+  }
+
   hasChildren(): boolean {
     return this.children.length > 0;
   }

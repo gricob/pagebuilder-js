@@ -1,11 +1,13 @@
 import { mapActions } from 'vuex';
 import { Node } from '@pagebuilder/core';
 import { actionTypes as editorActions } from '../store/editor';
+import { actionTypes as pageActions } from '../store/page';
 import { WIDGET } from '../types';
 import { Enum } from '..';
 import DragOverPayload from '../store/editor/actions/drag-over/payload';
 import DropPayload from '../store/editor/actions/drop/payload';
 import OpenOnSidebarPayload from '../store/editor/actions/open-on-sidebar/payload';
+import RemoveNodePayload from '../store/page/actions/remove-node/payload';
 
 const Widget = {
   props: {
@@ -62,6 +64,9 @@ const Widget = {
       editorActions.DROP,
       editorActions.OPEN_ON_SIDEBAR
     ]),
+    ...mapActions('page', [
+      pageActions.REMOVE_NODE,
+    ]),
     handleDragEnter(event: DragEvent): void {
       event.preventDefault();
       event.stopPropagation();
@@ -107,6 +112,10 @@ const Widget = {
         {
           label: 'Edit',
           handler: this.onEditButtonTapped,
+        },
+        {
+          label: 'Remove',
+          handler: this.onRemoveButtonTapped,
         }
       ]
     },
@@ -121,6 +130,13 @@ const Widget = {
       };
   
       this[editorActions.OPEN_ON_SIDEBAR](payload);
+    },
+    onRemoveButtonTapped(): void {
+      const payload: RemoveNodePayload = {
+        node: this.node
+      };
+
+      this[pageActions.REMOVE_NODE](payload);
     }
   },
 };
