@@ -12,7 +12,7 @@ export default class Factory {
     throw new Error(`Type ${type} is not supported. Did you forget to call extend method?`);
   }
 
-  extend(type: string, factory: (options?: any) => Node) {
+  extend(type: string, factory: (options?: Record<string, any>) => Node) {
     this.factoryMap[type] = factory;
   }
 

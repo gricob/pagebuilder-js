@@ -7,4 +7,6 @@ export default interface State {
   dropIndicator: HTMLElement | null;
   dropTargetNode: Node | null;
   dropPosition: TargetPosition | null;
+  sidebarComponent: string;
+  sidebarComponentOptions: object;
 }

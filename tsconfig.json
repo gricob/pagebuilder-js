@@ -5,6 +5,7 @@
     "noImplicitAny": false,
     "sourceMap": true,
     "declaration": true,
-    "moduleResolution": "node"
+    "moduleResolution": "node",
+    "experimentalDecorators": true
   }
 }

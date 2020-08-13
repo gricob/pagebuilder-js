@@ -21,8 +21,9 @@
     "tsc": "tsc"
   },
   "dependencies": {
-    "@pagebuilder/vue-editor": "file:../vue-editor",
-    "@pagebuilder/widgets": "file:../widgets",
+    "@pagebuilder/core": "*",
+    "@pagebuilder/vue-editor": "*",
+    "@pagebuilder/widgets": "*",
     "vue": "^2.6.11"
   }
 }

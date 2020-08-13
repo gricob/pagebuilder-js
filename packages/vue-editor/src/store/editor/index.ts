@@ -7,7 +7,9 @@ const state: State = {
   dropIndicator: null,
   dropTargetNode: null,
   dropPosition: null,
-}
+  sidebarComponent: 'PbWidgets',
+  sidebarComponentOptions: {},
+};
 
 export default {
   namespaced: true,

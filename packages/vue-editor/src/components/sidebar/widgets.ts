@@ -2,6 +2,7 @@ import { Widget } from '@pagebuilder/core';
 import { Widget as WidgetComponent } from '../atoms';
 
 export default {
+  name: 'PbWidgets',
   computed: {
     widgets() {
       return this.$store.state.editor.widgets;

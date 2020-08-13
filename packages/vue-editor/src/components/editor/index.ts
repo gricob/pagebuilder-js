@@ -1,5 +1,5 @@
-import Content from './content';
 import Frame from './frame';
 import Layout from './layout';
+import Sidebar from './sidebar';
 
-export { Content, Frame, Layout };
+export { Frame, Layout, Sidebar };

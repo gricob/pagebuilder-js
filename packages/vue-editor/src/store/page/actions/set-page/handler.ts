@@ -5,6 +5,7 @@ import SetPagePayload from './payload';
 
 const setPage: Action<State, SetPagePayload> = ({commit}, payload: SetPagePayload) => {
   commit(mutationTypes.SET_ROOT, payload.root);
+  commit(mutationTypes.SET_STYLESHEETS, payload.stylesheets);
 }
 
 export default setPage;

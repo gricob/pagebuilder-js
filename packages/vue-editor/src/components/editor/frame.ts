@@ -76,8 +76,8 @@ export default {
         name: 'editorFrameApp',
         store: this.$store,
         data: { children: children }, 
-        render(h) {
-          return h('div', this.children)
+        render(createElement) {
+          return createElement('div', this.children)
         },
       })
 

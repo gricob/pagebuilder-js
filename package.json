@@ -5,6 +5,8 @@
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "dependencies": {
+    "inversify": "^5.0.1",
+    "reflect-metadata": "^0.1.13",
     "uuid": "^8.2.0"
   },
   "devDependencies": {

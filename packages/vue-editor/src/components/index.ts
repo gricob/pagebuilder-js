@@ -1,11 +1,13 @@
 import { Widget } from './atoms';
-import { Content, Frame, Layout } from './editor';
+import { Frame, Layout, Sidebar } from './editor';
 import { Widgets } from './sidebar';
+import * as Form from './form';
 
 export {
   Widget,
-  Content,
   Frame,
   Layout,
-  Widgets
+  Sidebar,
+  Widgets,
+  Form
 };

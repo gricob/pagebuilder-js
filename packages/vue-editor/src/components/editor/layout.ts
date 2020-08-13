@@ -1,6 +1,7 @@
 import { mapActions } from 'vuex';
 import { actionTypes as editorActions } from '../../store/editor';
 import { actionTypes as pageActions } from '../../store/page';
+import { Sidebar } from '.';
 
 export default {
   props: {
@@ -22,15 +23,16 @@ export default {
     this[editorActions.SET_CONFIGURATION](this.config);
   },
   render(createElement) {
-    const sidebarSlot = this.$slots.sidebar;
     const contentSlot = this.$slots.default;
 
     return createElement('div', {
       class: 'pagebuilder-editor__layout',
     }, [
       createElement('div', {
-        class: 'pagebuilder-editor__sidebar-wrapper',
-      }, [sidebarSlot]),
+        class: 'pagebuilder-editor__sidebar-wrapper'
+      }, [
+        createElement(Sidebar)
+      ]),
       createElement('div', {
         class: 'pagebuilder-editor__content-wrapper',
       }, [contentSlot])

@@ -5,6 +5,7 @@ import { WIDGET } from '../types';
 import { Enum } from '..';
 import DragOverPayload from '../store/editor/actions/drag-over/payload';
 import DropPayload from '../store/editor/actions/drop/payload';
+import OpenOnSidebarPayload from '../store/editor/actions/open-on-sidebar/payload';
 
 const Widget = {
   props: {
@@ -22,9 +23,33 @@ const Widget = {
       return;
     }
 
+    this.setUpActionBar();
     this.setUpListeners();
   },
   methods: {
+    setUpActionBar() {
+      const el: HTMLElement = this.$el;
+      el.className = 'pb-editor__widget';
+
+      const actionBarWrapper = document.createElement('div');
+      actionBarWrapper.className = 'pb-editor__actionbar-wrapper';
+
+      const actionBar = document.createElement('div');
+      actionBar.className = 'pb-editor__actionbar';
+
+      const actions = this.configureActions();
+      actions.forEach(action => {
+        const actionEl: HTMLButtonElement = document.createElement('button');
+        actionEl.innerHTML = action.label;
+        actionEl.addEventListener('click', action.handler);
+
+        actionBar.appendChild(actionEl);
+      });
+
+      actionBarWrapper.appendChild(actionBar);
+
+      el.appendChild(actionBarWrapper);
+    },
     setUpListeners() {
       const el: HTMLElement = this.$el;
 
@@ -34,7 +59,8 @@ const Widget = {
     },
     ...mapActions('editor', [
       editorActions.DRAG_OVER,
-      editorActions.DROP
+      editorActions.DROP,
+      editorActions.OPEN_ON_SIDEBAR
     ]),
     handleDragEnter(event: DragEvent): void {
       event.preventDefault();
@@ -75,8 +101,28 @@ const Widget = {
 
       event.preventDefault();
       event.stopPropagation();
+    },
+    configureActions() {
+      return [
+        {
+          label: 'Edit',
+          handler: this.onEditButtonTapped,
+        }
+      ]
+    },
+    onEditButtonTapped(): void {
+      const payload: OpenOnSidebarPayload = {
+        component: this.node.metadata.component+'-form',
+        options: {
+          props: {
+            node: this.node
+          }
+        }
+      };
+  
+      this[editorActions.OPEN_ON_SIDEBAR](payload);
     }
-  }
+  },
 };
 
 export default Widget;
