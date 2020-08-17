@@ -1,3 +1,7 @@
-import formRegistry from './form-registry';
+import Registry from './registry';
+import { Component } from 'vue';
 
-export { formRegistry };
+const componentRegistry: Registry<Component> = new Registry<Component>();
+const formRegistry: Registry<Component> = new Registry<Component>();
+
+export { componentRegistry, formRegistry };

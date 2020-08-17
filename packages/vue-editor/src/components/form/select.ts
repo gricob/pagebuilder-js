@@ -13,20 +13,36 @@ export default {
     value: {
       type: String,
       default: ''
+    },
+    options: {
+      type: Array,
+      default: () => []
+    }
+  },
+  methods: {
+    createOptionElements(createElement) {
+      const optionElements = this.options.map(option => createElement('option', {
+        domProps: {
+          value: option.value,
+          innerHTML: option.label,
+        }
+      }));
+
+      return optionElements;
     }
   },
   render(createElement) {
     let self = this;
 
-    const inputId = `pb-form_input-${uuidv4()}`;
+    const selectId = `pb-form_input-${uuidv4()}`;
 
-    const input = createElement('input', {
+    const select = createElement('select', {
       attrs: {
         type: this.type,
       },
       class: 'pb-form__control',
       domProps: {
-        id: inputId,
+        id: selectId,
         value: this.value,
       },
       on: {
@@ -34,17 +50,17 @@ export default {
           self.$emit('input', event.target.value);
         }
       }
-    });
+    }, this.createOptionElements(createElement));
 
     const label = createElement('label', {
       domProps: {
-        htmlFor: inputId,
+        htmlFor: selectId,
         innerHTML: this.label
       }
     });
 
     return createElement('div', {
       class: 'pb-form__group',
-    }, [label, input]);
+    }, [label, select]);
   }
 }

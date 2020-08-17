@@ -1,5 +1,5 @@
 import { Widget } from './atoms';
-import { Frame, Layout, Sidebar } from './editor';
+import { Frame, Layout, Sidebar, NodeWrapper } from './editor';
 import { Widgets } from './sidebar';
 import * as Form from './form';
 
@@ -9,5 +9,6 @@ export {
   Layout,
   Sidebar,
   Widgets,
+  NodeWrapper,
   Form
 };

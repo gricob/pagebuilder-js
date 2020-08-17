@@ -2,8 +2,8 @@ import { Store } from 'vuex';
 import { Configuration } from "@pagebuilder/core";
 import { Widget } from "./models";
 import modules from './store';
-import { Widgets, Form, Sidebar } from './components';
-import { formRegistry } from './services';
+import { Widgets, Form, Sidebar, NodeWrapper } from './components';
+import { formRegistry, componentRegistry } from './services';
 
 export default {
   install(Vue, config: Configuration) {
@@ -12,7 +12,8 @@ export default {
     this.registerStoreModules(Vue);
     this.setupWidgets(Vue, config.widgets);
     this.setupEditorComponents(Vue);
-    this.registerFormComponents(Vue);
+    this.registerComponents(Vue);
+    this.registerForms(Vue);
   },
   registerStoreModules(Vue) {
     const store: Store<any> = Vue.store;
@@ -26,9 +27,18 @@ export default {
   setupEditorComponents(Vue) {
     Vue.component('PbWidgets', Widgets);
     Vue.component('PbSidebar', Sidebar);
+    Vue.component('PbNodeWrapper', NodeWrapper);
     Vue.component('PbFormInput', Form.Input);
+    Vue.component('PbFormSelect', Form.Select);
   },
-  registerFormComponents(Vue) {
+  registerComponents(Vue) {
+    const components = componentRegistry.getAll();
+    
+    for(const widget in components) {
+      Vue.component(widget, components[widget]);
+    }
+  },
+  registerForms(Vue) {
     const formComponents = formRegistry.getAll();
     
     for(const widget in formComponents) {
@@ -37,7 +47,7 @@ export default {
   },
   setupWidgets(Vue, widgets: Widget[]) {
     widgets.forEach(widget => {
-      widget.setup(Vue);
+      widget.setup();
     })
   }
 }
