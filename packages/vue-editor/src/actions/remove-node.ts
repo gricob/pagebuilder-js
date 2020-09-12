@@ -5,7 +5,7 @@ import { actionTypes as pageActions } from '../store/page';
 
 const action: Action = {
   title: 'Remove',
-  handler: (ctx: Context) => {
+  onClick: (ctx: Context) => {
     const payload: RemoveNodePayload = {
       node: ctx.node
     };

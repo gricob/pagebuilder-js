@@ -1,12 +1,12 @@
 import { Action } from "vuex";
 import { NodeFactory } from '@pagebuilder/core';
 import State from '../../state';
-import DropPayload from './payload';
+import CreateNodePayload from './payload';
 import { actionTypes, mutationTypes } from '../../';
 import { actionTypes as pageActions } from '../../../page';
 import InsertNodePayload from "../../../page/actions/insert-node/payload";
 
-const dropHandler: Action<State, DropPayload> = ({dispatch, commit, state}, payload: DropPayload) => {
+const dropHandler: Action<State, any> = ({dispatch, commit, state}, payload: CreateNodePayload) => {
   dispatch(actionTypes.CLEAR_DROP_INDICATOR);
 
   const node = NodeFactory.getInstance().create(payload.widget);

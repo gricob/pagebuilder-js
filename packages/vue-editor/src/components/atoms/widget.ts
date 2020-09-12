@@ -1,7 +1,7 @@
 import { mapActions } from 'vuex';
 import { Widget } from '@pagebuilder/core';
-import { WIDGET } from '../../types';
 import { actionTypes as editorActions } from '../../store/editor';
+import { DragType } from '../../enums';
 
 export default {
   name: 'Widget',
@@ -14,7 +14,7 @@ export default {
   methods: {
     ...mapActions('editor', [editorActions.DRAG_END]),
     handleDrag(event: DragEvent) {
-      event.dataTransfer.setData(WIDGET, this.widget.name.toString());
+      event.dataTransfer.setData(DragType.Widget, this.widget.name.toString());
     },
   },
   render(createElement) {

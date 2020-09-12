@@ -1,13 +1,11 @@
-import { mapActions } from 'vuex';
-import { WIDGET } from '../../types';
-import { actionTypes as editorActions } from '../../store/editor';
-import DropPayload from '../../store/editor/actions/drop/payload';
+import Droppable from '../../mixins/droppable';
 
 export default {
+  mixins: [Droppable],
   computed: {
     stylesheets() {
       return this.$store.state.page.stylesheets;
-    }
+    },
   },
   render(h) {
     return  h('iframe', {
@@ -23,27 +21,6 @@ export default {
     }
   },  
   methods: {
-    ...mapActions('editor', [editorActions.DROP]),
-    handleDrag(event: DragEvent) {
-      event.preventDefault();
-      event.stopPropagation();
-    },
-    handleDrop(event: DragEvent): void {
-      const widget = event.dataTransfer.getData(WIDGET);
-
-      if (!widget) {
-        return;
-      }
-
-      const payload: DropPayload = {
-        widget
-      };
-
-      this[editorActions.DROP](payload);
-
-      event.preventDefault();
-      event.stopPropagation();
-    },
     renderChildren() {
       const children = this.$slots.default;
       const document = this.$el.contentDocument;
@@ -68,9 +45,9 @@ export default {
       const el = document.createElement('div');
       body.appendChild(el)
 
-      body.addEventListener('dragenter', this.handleDrag);
-      body.addEventListener('dragover', this.handleDrag);
-      body.addEventListener('drop', this.handleDrop);
+      body.addEventListener('dragenter', this.onDragEnter);
+      body.addEventListener('dragover', this.onDragOver);
+      body.addEventListener('drop', this.onDrop);
 
       const frameApp = new this.constructor({
         name: 'editorFrameApp',

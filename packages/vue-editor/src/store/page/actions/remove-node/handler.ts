@@ -9,7 +9,7 @@ const handler: Action<State, any> = ({dispatch, rootState}, payload: RemoveNodeP
 
   parent.removeChild(payload.node);
 
-  if(payload.node === rootState.editor.sidebarComponentOptions.props.node) {
+  if(payload.node === rootState.editor.sidebarComponentOptions?.props?.node) {
     const openOnSidebarPayload: OpenOnSidebarPayload = {
       component: 'pb-widgets',
     };

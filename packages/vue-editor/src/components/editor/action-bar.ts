@@ -1,6 +1,7 @@
 import { Node } from '@pagebuilder/core';
-import { Action, editNode, removeNode } from '../../actions';
+import { Action, editNode, removeNode, moveNode } from '../../actions';
 import Context from '../../models/context';
+import { ActionEventType } from '../../enums';
 
 export default {
   props: {
@@ -13,28 +14,43 @@ export default {
     configureActions(): Action[] {
       return [
         editNode,
-        removeNode
+        removeNode,
+        moveNode
       ];
     },
-    dispatchAction(action: Action) {
+    dispatchAction(action: Action, eventType: ActionEventType, event: Event) {
       const context: Context = {
         node: this.node,
-        store: this.$store
+        store: this.$store,
+        event
       };
 
-      action.handler(context);
+      if (action[eventType]) {
+        action[eventType](context);
+      }
     },
   },
   render(createElement) {
     const actions = this.configureActions();
-    const actionElements = actions.map(action => createElement('button', {
-      domProps: {
-        innerHTML: action.label || action.title 
-      },
-      on: {
-        click: () => this.dispatchAction(action),
+
+    const actionElements = actions.map(action => {
+      const attrs = {}
+      if (action[ActionEventType.dragStart]) {
+        attrs['draggable'] = true
       }
-    }));
+
+      return createElement('button', {
+        domProps: {
+          innerHTML: action.label || action.title 
+        },
+        attrs,
+        on: {
+          click: (event: Event) => this.dispatchAction(action, ActionEventType.click, event),
+          dragstart: (event: DragEvent) => this.dispatchAction(action, ActionEventType.dragStart, event),
+          dragend: (event: DragEvent) => this.dispatchAction(action, ActionEventType.dragEnd, event),
+        }
+      })
+    });
 
     const actionBar = createElement('div', {
       class: 'pb-editor__actionbar'

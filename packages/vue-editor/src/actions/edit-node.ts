@@ -5,7 +5,7 @@ import { actionTypes as editorActions } from '../store/editor';
 
 const action: Action = {
   title: 'Edit',
-  handler: (ctx: Context) => {
+  onClick: (ctx: Context) => {
     const payload: OpenOnSidebarPayload = {
       component: ctx.node.metadata.component+'-form',
       options: {

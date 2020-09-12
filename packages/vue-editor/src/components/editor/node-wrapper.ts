@@ -2,10 +2,10 @@ import { mapActions } from 'vuex';
 import { Node } from '@pagebuilder/core';
 import { actionTypes as editorActions } from '../../store/editor';
 import { Enum } from '../..';
-import { WIDGET } from '../../types';
 import DragOverPayload from '../../store/editor/actions/drag-over/payload';
-import DropPayload from '../../store/editor/actions/drop/payload';
+import CreateNodePayload from '../../store/editor/actions/create-node/payload';
 import ActionBar from './action-bar';
+import { DragType } from '../../enums';
 
 export default {
   props: {
@@ -14,10 +14,15 @@ export default {
       required: true,
     }
   },
+  computed: {
+    isFormOpen() {
+      return this.node === this.$store.state.editor.sidebarComponentOptions?.props?.node;
+    }
+  },
   methods: {
     ...mapActions('editor', [
       editorActions.DRAG_OVER,
-      editorActions.DROP,
+      editorActions.CREATE_NODE,
     ]),
     onDragEnter(event: DragEvent): void {
       event.preventDefault();
@@ -43,18 +48,18 @@ export default {
       event.stopPropagation();
     },
     onDrop(event: DragEvent): void {
-      const widget = event.dataTransfer.getData(WIDGET);
+      const widget = event.dataTransfer.getData(DragType.Widget);
 
       if (!widget) {
         return;
       }
 
-      const payload: DropPayload = { 
+      const payload: CreateNodePayload = { 
         refNode: this.node, 
         widget
       };
 
-      this[editorActions.DROP](payload);
+      this[editorActions.CREATE_NODE](payload);
 
       event.preventDefault();
       event.stopPropagation();
@@ -74,7 +79,10 @@ export default {
     });
 
     return createElement('div', {
-      class: 'pb-editor__widget',
+      class: {
+        'pb-editor__widget': true,
+        'is-form-open': this.isFormOpen,
+      },
       on: {
         dragover: this.onDragOver,
         dragenter: this.onDragEnter,
